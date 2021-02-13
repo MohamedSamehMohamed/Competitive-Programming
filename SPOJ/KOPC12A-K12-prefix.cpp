@@ -3,33 +3,36 @@
 using namespace std;
 const int N = 1e4 + 9;
 int h[N], cost[N], n;
-long long HC[N], a[N]; 
+long long pre[N+5], tem[N+5]; 
+void addRange(int l, int r, long long st, int add)
+{
+ pre[l] += st;
+ pre[r+1] -= st + 1LL*(r-l)*add;
+ tem[l+1] += add;
+ tem[r+1] -= add;  
+}
 void test()
 {
- memset(HC, 0, sizeof HC);
- memset(a, 0, sizeof a); 
+ memset(pre, 0, sizeof pre);
+ memset(tem, 0, sizeof tem); 
  scanf("%d", &n);
  for (int i = 0; i < n; i++)scanf("%d", h+i); 
  for (int i = 0; i < n; i++)scanf("%d", cost+i);
- int mx = *max_element(h, h+n); 
  for (int i = 0; i < n; i++)
  {
-  HC[h[i] + 1] += cost[i];
-  a[h[i]+2] += cost[i];
-  if (h[i] == 0)continue;  
-  HC[0] += 1LL * h[i] * cost[i]; 
-  HC[h[i]] -= cost[i]; 
-  a[1] -= cost[i];
-  a[h[i]] += cost[i]; 
+  addRange(h[i]+1, N, 1LL*cost[i], cost[i]); 
+  if (h[i])
+   addRange(0, h[i]-1, 1LL*cost[i] * h[i], -cost[i]);
  }
- long long pre = a[0]; 
+ long long add = tem[0]; 
  for (int i = 1; i < N; i++)
  {
-  pre += a[i]; 
-  HC[i] += HC[i-1] + pre; 
+  add += tem[i]; 
+  pre[i] += pre[i-1] + add; 
  }
- long long ans = HC[0];
- for (int i = 0; i <= mx; i++)ans = min(ans, HC[i]); 
+ long long ans = pre[0];
+ for (int i = 0; i < N; i++)
+  ans = min(ans, pre[i]); 
  printf("%lld\n", ans); 
 }
 int main()
