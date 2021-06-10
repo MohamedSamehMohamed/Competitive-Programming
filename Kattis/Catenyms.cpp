@@ -73,7 +73,7 @@ void test()
   }
  }
  dfs(st);
- if (bad || (sz != n))
+ if (bad || sz != n)
  {
   printf("***\n"); 
   return; 
