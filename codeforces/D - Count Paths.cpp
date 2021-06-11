@@ -1,57 +1,53 @@
-// Author: Mohamed Sameh
-#include<bits/stdc++.h>
-using namespace std;
-const int mod = 1e9 + 7; 
-struct Matrix
-{
- int sz;
- vector<vector<int>> a;
- Matrix (int sz)
- {
-  this->sz = sz; 
-  a = vector<vector<int>>(sz, vector<int>(sz));
-  for (int i = 0; i < sz; i++)
-   for (int j = 0; j < sz; j++)
-    a[i][j] = 0;
- }
- Matrix operator *(const Matrix& other)
- {
-  Matrix ret(sz); 
-  for (int i = 0; i < sz; i++)
-   for (int j = 0; j < sz; j++)
-    for (int k = 0; k < sz; k++)
-     ret.a[i][k] = (ret.a[i][k] + 1LL*a[i][j] * other.a[j][k])%mod;
-  return ret; 
- }
- void Identity()
- {
-  for (int i = 0; i < sz; i++)
-   for (int j = 0; j < sz; j++)
-    a[i][j] = (i == j); 
- }
-};
-int n, m, k;
+// Author : Mohamed sameh
+#include <bits/stdc++.h>
+typedef long long ll ;
+#define pb push_back
+#define f first
+#define s second
+#define all(v) v.begin(),v.end()
+#define rall(v) v.rbegin(),v.rend()
+#define SZ(a) (int)a.size()
+#define Flush fflush(stdout);
+#define FAST ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+ 
+using namespace std ;
+const int N = 102;
+int n, m, b, K;
+vector<array<int, 3>> a(N); 
+const ll Mx = 4e18;
+ll dp[1<<20];
 int main()
-{ 
- scanf("%d%d%d", &n, &m, &k);
- Matrix mat(n), ret(n); 
- ret.Identity(); 
- for (int i = 0; i < m; i++)
- {
-  int u, v;
-  scanf("%d%d", &u, &v);
-  u--;v--;
-  mat.a[u][v] = 1; 
- } 
- while(k)
- {
-  if (k & 1) ret = ret * mat; 
-  mat = mat * mat; 
-  k >>= 1LL; 
- }
- int ans = 0; 
+{
+ for (int i = 0; i < (1<<20); i++)dp[i] = Mx;
+ scanf("%d%d%d", &n, &m, &b);
+ int tar = (1<<m) - 1; 
  for (int i = 0; i < n; i++)
-  for (int j = 0; j < n; j++)
-   ans = (ans + ret.a[i][j]) % mod; 
- printf("%d\n", ans);
+ {
+  scanf("%d%d", &a[i][0], &a[i][1]);
+  int x, y;
+  scanf("%d", &x);
+  while(x--)
+  {
+   scanf("%d", &y); 
+   y--;
+   a[i][2]|=(1<<y); 
+  }
+ }
+ 
+ a.resize(n); 
+ sort(all(a), [](array<int, 3> &A, array<int, 3> &B){return A[1] < B[1];});
+ ll ans = Mx;
+ dp[0] = 0;
+ for (int i = 0; i < n; i++)
+ {
+  for (int j = 0; j <= tar; j++)
+  {
+   if (dp[j] == Mx)continue;
+   int msk = j | a[i][2];
+   dp[msk] = min(dp[msk], dp[j] + a[i][0]); 
+  }
+  if (dp[tar] != Mx)ans = min(ans, dp[tar] + 1LL*a[i][1] * b); 
+ }
+ if (ans == Mx)ans = -1;
+ printf("%lld", ans);
 }
