@@ -74,6 +74,37 @@ class BST{
       return contains(nodes[root].left, val);
     return contains(nodes[root].right, val); 
   }
+  T lower_bound(int root, T val)
+  {
+    if (root == 0)
+    {
+      // no lower bound exist 
+      // for simplicity 
+      return INT_MAX; 
+    }
+    if (nodes[root].val == val)
+    {
+      return val; 
+    }else if (nodes[root].val < val)
+      return lower_bound(nodes[root].right, val);
+    else 
+    {
+      int lower = lower_bound(nodes[root].left, val); 
+      // current root have a value > val 
+      // current root is the lowerbound if the left subtree doesn't have 
+      // any value >= val 
+      if (lower != INT_MAX)
+        return lower; 
+      return nodes[root].val; 
+    }
+  }
+  void print(int root)
+  {
+    if (root == 0)return; 
+    print(nodes[root].left); 
+    printf("%d ", nodes[root].val);
+    print(nodes[root].right);
+  }
   public:
     BST()
     {
@@ -97,6 +128,19 @@ class BST{
     {
       return contains(root, val); 
     }
+    T lower_bound(T val)
+    {
+      return lower_bound(root, val); 
+    }
+    T upper_bound(T val)
+    {
+      return lower_bound(root, val + T(1)); 
+    } 
+    void print()
+    {
+      print(root);
+      printf("\n"); 
+    }
 };
 int main()
 {
@@ -105,4 +149,13 @@ int main()
   cout << st.contains(1) << "\n"; 
   st.erase(1); 
   cout << st.contains(1) <<"\n"; 
+
+
+  for(int i = 1; i < 20; i+=3)st.insert(i);
+  st.print(); 
+  for(int i = 0; i < 20; i++)
+  {
+    cout << i <<" lowerBound: " << st.lower_bound(i) <<"\n"; 
+    cout << i <<" upper bound: "<< st.upper_bound(i) <<"\n"; 
+  }
 }
