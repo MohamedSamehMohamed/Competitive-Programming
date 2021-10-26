@@ -15,13 +15,16 @@ class AVL{
   int root = 0;
   int height(int root)
   {
+    assert(root >= 0 && root < nodes.size()); 
     return nodes[root].height; 
   }
   void single_rotate(int& root, int dir)
   {
+    assert(root >= 0 && root < nodes.size()); 
     if (dir == 0)
     {
       int temp = nodes[root].left; 
+      assert(temp >= 0 && temp < nodes.size()); 
       nodes[root].left = nodes[temp].right; 
       nodes[temp].right = root; 
       nodes[root].height = max(height(nodes[root].left), height(nodes[root].right)) + 1;
@@ -30,6 +33,7 @@ class AVL{
     }else 
     {
       int temp = nodes[root].right; 
+      assert(temp >= 0 && temp < nodes.size()); 
       nodes[root].right = nodes[temp].left; 
       nodes[temp].left = root; 
       nodes[root].height = max(height(nodes[root].left), height(nodes[root].right)) + 1;
@@ -40,6 +44,7 @@ class AVL{
   }
   void double_rotate(int& root, int dir)
   {
+    assert(root >= 0 && root < nodes.size()); 
     if (dir == 0)
     {
       single_rotate(nodes[root].left, 1); 
@@ -53,6 +58,7 @@ class AVL{
   void balance(int& root)
   {
     if (root == 0)return; 
+    assert(root >= 0 && root < nodes.size());
     if (height(nodes[root].left) - height(nodes[root].right) > ALLOWED_IMBALANCE)
     {
       if (height(nodes[nodes[root].left].left) >= height(nodes[nodes[root].left].right))
@@ -70,6 +76,7 @@ class AVL{
   }
   void insert(int& root, T val)
   {
+    assert(root >= 0 && root < nodes.size()); 
     if (root == 0)
     {
       root = nodes.size(); 
@@ -83,7 +90,7 @@ class AVL{
     {
       insert(nodes[root].left, val); 
     }
-    balance(root);
+    //balance(root);
   }
   int find_min(int root)
   {
@@ -159,6 +166,11 @@ class AVL{
     printf("%d ", nodes[root].val);
     print(nodes[root].right);
   }
+  int get_max_height(int root)
+  {
+    if (root == 0)return 0;
+    return 1 + max(get_max_height(nodes[root].left), get_max_height(nodes[root].right));
+  }
   public:
     AVL()
     {
@@ -195,10 +207,12 @@ class AVL{
       print(root);
       printf("\n"); 
     }
+    int MAX()
+    {
+      return get_max_height(root); 
+    }
 };
 int main()
 {
-  AVL<int> avl; 
-  avl.insert(5); 
-  avl.print(); 
+  
 }
