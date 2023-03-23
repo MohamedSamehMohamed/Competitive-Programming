@@ -1,0 +1,23 @@
+// Author : Mohamed Sameh
+#include <bits/stdc++.h>
+typedef long long ll ;
+#define pb push_back
+#define f first
+#define s second
+#define all(v) v.begin(),v.end()
+#define rall(v) v.rbegin(),v.rend()
+#define SZ(a) (int)a.size()
+#define Flush fflush(stdout);
+using namespace std ;
+class KidsInAYard
+{
+public :
+int howMany(int r2, int r3, int r5)
+{
+    // 2 , 3 , 5
+    for (int i = 1 ; ; i++)
+    {
+        if (i % 2 == r2 && i % 3 == r3 && i % 5 == r5 )return i;
+    }
+}
+};

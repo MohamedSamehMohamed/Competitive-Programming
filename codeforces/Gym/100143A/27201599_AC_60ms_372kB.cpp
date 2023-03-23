@@ -1,0 +1,37 @@
+// Author : Mohamed Sameh
+#include <bits/stdc++.h>
+#define pb push_back
+#define f first
+#define s second
+#define FAST ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+#define all(v) v.begin(),v.end()
+#define rall(v) v.rbegin(),v.rend()
+#define SZ(a) (int)a.size()
+#define Flush fflush(stdout);
+typedef long long ll ;
+using namespace std ;
+int n;
+int a[100][7];
+int main()
+{
+  freopen("document.in", "r", stdin);
+  freopen("document.out", "w", stdout);
+  cin >> n;
+  for (int i = 0; i < n; i++)
+  {
+    for (int j = 0; j < 5; j++)cin >> a[i][j];
+  }
+  int days = 0;
+  int j = 0;
+  for (int i = 0; i < n; i++)
+  {
+    for (; ;j = (j + 1)%7)
+    {
+      days++;
+      if (a[i][j])break;
+    }
+    j = (j+1)%7;
+  }
+  cout << days << '\n';
+
+}
