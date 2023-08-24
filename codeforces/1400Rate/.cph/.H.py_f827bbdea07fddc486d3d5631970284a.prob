@@ -1,0 +1,1 @@
+{"name":"Local: H","url":"e:\\ProgrammingLangueTraining\\c++\\CLion\\1400Rate\\H.py","tests":[{"id":1689340531839,"input":"3 4\n1 2 10 11\n3 6 2 3\n2 11 12\n4 9 11 10 5","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"e:\\ProgrammingLangueTraining\\c++\\CLion\\1400Rate\\H.py","group":"local","local":true}

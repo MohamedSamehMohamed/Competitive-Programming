@@ -1,3 +1,7 @@
+#include<bits/stdc++.h>
+using namespace std; 
+const int N = 1e5 + 9; 
+
 struct BIT
 {
     int tree[N];
@@ -18,35 +22,43 @@ struct BIT
 }bit;
 
 
-
-
-
-// tourist
-
-
 template <typename T>
-class MyFenwick {
-public:
+class FenwickTree {
+  public:
     vector<T> bitArray;
     int n;
 
-    MyFenwick(int _n) : n(_n) {
-        bitArray.resize(n);
+    FenwickTree(int _n) : n(_n) {
+      bitArray.resize(n);
     }
 
-    void modify(int x, T v) {
-        while (x < n) {
-            bitArray[x] += v;
-            x |= (x + 1);
-        }
+    void add(int x, T v) {
+      while (x < n) {
+          bitArray[x] += v;
+          x |= (x + 1);
+      }
     }
 
     T get(int x) {
-        T v{};
-        while (x >= 0) {
-            v += bitArray[x];
-            x = (x & (x + 1)) - 1;
-        }
-        return v;
+      T v{};
+      while (x >= 0) {
+          v += bitArray[x];
+          x = (x & (x + 1)) - 1;
+      }
+      return v;
+    }
+    T kth(int k) {
+      // 1 based 
+      T v{};
+      int l = 0, r = n-1, m;
+      while (l <= r)
+      {
+        m = (l+r) >> 1;
+        if (get(m) > k)
+          r = m - 1; 
+        else 
+          l = m + 1, v = m; 
+      }
+      return v; 
     }
 };
