@@ -34,11 +34,7 @@ void test(){
   int ans = 1e9;
   for (int i = 0; i <= total; i++){
     if (sums[p][i] == 0)continue;
-    for (int _ = 0; _ < 2; _++)
-    {
-      ans = min(ans, max( (total-i+w-1) / w, (i+f-1) / f ));
-      swap(w, f);
-    }
+    ans = min(ans, max( (total-i+w-1) / w, (i+f-1) / f ));
   }
   printf("%d\n", ans);
 }
