@@ -1,3 +1,5 @@
+#include<bits/stdc++.h>
+using namespace std;
 template <typename T, class F = function<T(const T&, const T&)>>
 class SparseTable {
 public:
@@ -24,5 +26,6 @@ public:
     }
 };
 
-
-SparseTable<int> st(a, [&](int i, int j) { return min(i, j); });
+int main(){
+  SparseTable<int> st(a, [&](int i, int j) { return min(i, j); });
+}

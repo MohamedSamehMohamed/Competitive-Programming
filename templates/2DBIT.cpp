@@ -1,19 +1,22 @@
 #include<bits/stdc++.h>
-using namespace std; 
-
-const int N = 100, M = 100; 
-
-struct bit2D
+using namespace std;
+template<typename T>
+class Fenwick2D
 {
-  // N row, M col 
-  int tree[N][M];
-  void init()
-  {
-      memset(tree, 0, sizeof tree);
+  int N, M;
+  vector<vector<T>> tree;
+public:
+  Fenwick2D(int row, int col){
+    N = row;
+    M = col;
+    tree = vector<vector<T>> (N);
+    for (int i = 0; i < N; i++){
+      tree[i] = vector<T>(M, {});
+    }
   }
-  int get(int i, int j)
+  T get(int i, int j)
   {
-      int  ret = 0;
+      T  ret = 0;
       for(i++ ; i ; i -= (i & (-i)))
       {
           for(int jj = j + 1 ; jj ; jj -= (jj & (-jj)))
@@ -23,7 +26,7 @@ struct bit2D
       }
       return ret;
   }
-  void add(int i, int j, int  val)
+  void add(int i, int j, T  val)
   {
       for(i++ ; i <= N ; i += (i & (-i)))
       {
@@ -37,4 +40,9 @@ struct bit2D
   {
       return get(ei, ej) - get(ei, sj - 1) - get(si - 1, ej) + get(si - 1, sj - 1);
   }
-}_2bit;
+};
+int main(){
+  Fenwick2D<int> fen(10, 10);
+  fen.add(5, 5, 1);
+  printf("%d\n", fen.get(9, 9));
+}
