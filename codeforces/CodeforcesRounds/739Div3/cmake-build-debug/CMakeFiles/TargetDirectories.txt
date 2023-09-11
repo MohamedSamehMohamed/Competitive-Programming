@@ -1,3 +1,0 @@
-D:/ProgrammingLangueTraining/c++/CLion/CodeforcesRounds/739Div3/cmake-build-debug/CMakeFiles/739Div3.dir
-D:/ProgrammingLangueTraining/c++/CLion/CodeforcesRounds/739Div3/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/ProgrammingLangueTraining/c++/CLion/CodeforcesRounds/739Div3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
