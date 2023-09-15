@@ -1,0 +1,46 @@
+// Author : Mohamed Sameh
+#include<iostream>
+#include<vector>
+#include<map>
+#include<set>
+#include<algorithm>
+#include<cmath>
+#include<queue>
+#include<list>
+#include<stack>
+#include<deque>
+#include <cstring>
+#include <iomanip>    
+using namespace std ;
+typedef long long ll ;
+
+#define pb push_back
+#define f first
+#define s second
+#define all(v) v.begin(),v.end()
+#define rall(v) v.rbegin(),v.rend()
+#define PI  3.141592 
+#define SZ(a) (int)a.size()
+void READ (string INPUT = "NO" , string OUTPUT = "NO" )
+{
+    if (INPUT != "NO")
+    freopen(INPUT.c_str() , "r" , stdin );
+    if (OUTPUT!="NO")
+    freopen ( OUTPUT.c_str() , "w" , stdout);
+}
+int siev[1000001];
+int a , b , c ; 
+int main ()
+{
+  for (int i = 1; i < 1000001 ;i++)
+      for (int j = i ; j < 1000001 ;j+=i)
+          siev[j]++; 
+  cin >> a >> b >>c;  
+  int ans = 0;
+  for (int i = 1 ; i <= a ;i++)
+      for (int j =1 ;j <= b ;j++)
+          for (int k = 1; k <= c ;k++)
+              ans += siev[i*j*k];
+    cout << ans <<"\n";
+    return 0 ; 
+}

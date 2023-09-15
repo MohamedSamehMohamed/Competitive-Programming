@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "..\\.."
+		},
+		{
+			"path": "..\\..\\..\\code-library-master"
+		},
+		{
+			"path": "..\\..\\..\\Competitive-Coding-master"
+		},
+		{
+			"path": "../../code-library-master"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"iostream": "cpp"
+		}
+	}
+}
