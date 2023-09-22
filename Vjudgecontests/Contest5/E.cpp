@@ -8,10 +8,6 @@ class LCA {
   int node_one_far, node_two_far, diameter;
   vector<vector<int>> kth_parent, adj;
   vector<int> time_in, time_out, level;
-  void precompute(){
-    for (int j = 0; j < N; j++)
-      precompute(j);
-  }
   void precompute(int node){
     for (int i = 1; i < LG; i++)
       if (~kth_parent[node][i - 1])
@@ -21,6 +17,7 @@ class LCA {
     time_in[k] = ++_time;
     kth_parent[k][0] = par;
     level[k] = lvl;
+    precompute(k);
     for (auto it: adj[k]) {
       if (it == par)
         continue;
@@ -60,13 +57,10 @@ public:
     }
   }
   void run_dfs(int root = 0){
+    level[root] = 0;
     kth_parent = vector<vector<int>>(N, vector<int>(LG, -1));
-    time_in = vector<int>(N);
-    time_out = vector<int>(N);
-    level = vector<int>(N);
     _time = 0;
     dfs(root, -1, 0);
-    precompute();
   }
   vector<int> get_farthest_two_nodes(){
     // assume first dfs applied
