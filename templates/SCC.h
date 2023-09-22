@@ -1,5 +1,9 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 1e5 + 9;
 vector<int> adj[N], adj_rev[N], order, component;
-int used[N];
+int used[N], n;
 void dfs1(int v) {
     used[v] = true;
     for (auto u : adj[v])
@@ -16,16 +20,17 @@ void dfs2(int v) {
 }
 void SplitComponent()
 {
-    for (int i = 0; i < n; i++)
-        if (!used[i])
-            dfs1(i);
-    memset(used, 0, sizeof used);
-    reverse(order.begin(), order.end());
-    for (auto v : order)
-    {
-        if (used[v])continue;
-        dfs2(v);
-        // component contain cur SCC
-        component.clear();
-    }
+  memset(used, 0, sizeof used);
+  for (int i = 0; i < n; i++)
+      if (!used[i])
+          dfs1(i);
+  memset(used, 0, sizeof used);
+  reverse(order.begin(), order.end());
+  for (auto v : order)
+  {
+      if (used[v])continue;
+      dfs2(v);
+      // component contain cur SCC
+      component.clear();
+  }
 }

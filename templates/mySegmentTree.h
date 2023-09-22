@@ -1,3 +1,6 @@
+#include<bits/stdc++.h>
+using namespace std;
+
 template <typename T>
 class segmentTree {
 public:
@@ -25,33 +28,38 @@ public:
         }
     };
     vector<Node> segTree;
-    vector<T> a;
     int n;
+    int getSegmentTreeCreatedSize(){
+      int sz = 0;
+      while ((1<<sz) < n)
+        sz++;
+      return (1<<sz);
+    }
     segmentTree(int _n)
     {
       n = _n;
-      segTree.resize(4 * n);
+      segTree.resize(getSegmentTreeCreatedSize());
     }
-    segmentTree(int _n, vector<T>& _a)
+    segmentTree(int _n, vector<T>& _a): segmentTree(_n)
     {
-      n = _n;
-      a = _a;
-      segTree.resize(4 * n);
-      build(0, 0, n-1);
+      build(0, 0, n-1, _a);
+    }
+    Node mergeNode(Node l, Node r)
+    {
+      return l + r;
     }
     void pushdown(int node, int l, int r)
     {
-      if (segTree[node].hasLazy != 0)
-      {
-        int n1 = node * 2 + 1;
-        int n2 = n1 + 1;
-        int m = (l+r) >> 1;
-        segTree[n1].addLazy(l, m, segTree[node].hasLazy);
-        segTree[n2].addLazy(m+1, r, segTree[node].hasLazy);
-        segTree[node].hasLazy = 0;
-      }
+      if (segTree[node].hasLazy == 0) return;
+      assert(l != r);
+      int n1 = node * 2 + 1;
+      int n2 = n1 + 1;
+      int m = (l+r) >> 1;
+      segTree[n1].addLazy(l, m, segTree[node].hasLazy);
+      segTree[n2].addLazy(m+1, r, segTree[node].hasLazy);
+      segTree[node].hasLazy = 0;
     }
-    void build(int node, int l, int r)
+    void build(int node, int l, int r, vector<T>& a)
     {
       if (l == r)
       {
@@ -61,8 +69,8 @@ public:
       int m = (l+r) >> 1;
       int n1 = node * 2 + 1;
       int n2 = n1 + 1;
-      build(n1, l, m);
-      build(n2, m+1, r);
+      build(n1, l, m, a);
+      build(n2, m+1, r, a);
       segTree[node] = segTree[n1] + segTree[n2];
     }
     Node queryHelper(int node, int l, int r, int le, int re)
@@ -79,10 +87,7 @@ public:
         return queryHelper(n2, m+1, r, le, re);
       return mergeNode(queryHelper(n1, l, m, le, re) , queryHelper(n2, m+1, r, le, re));
     }
-    Node mergeNode(Node l, Node r)
-    {
-      return l + r;
-    }
+
     Node query(int l, int r)
     {
       return queryHelper(0, 0, n-1, l, r);
@@ -107,5 +112,4 @@ public:
     {
       updateHelper(0, 0, n-1, l, r, newVal, lazy);
     }
-
 };

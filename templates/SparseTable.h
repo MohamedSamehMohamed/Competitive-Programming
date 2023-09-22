@@ -27,5 +27,8 @@ public:
 };
 
 int main(){
-  SparseTable<int> st(a, [&](int i, int j) { return min(i, j); });
+  vector<int> a;
+  SparseTable<int> st(a,
+                      [&](int i, int j)
+                      {return min(i, j); });
 }
