@@ -22,7 +22,6 @@ void addEdge(int a,int b,int c)
 const int INF = 1e9;
 vector<vector<int>> capacity;
 vector<vector<int>> adj;
-
 int bfs(int s, int t, vector<int>& parent) {
     fill(parent.begin(), parent.end(), -1);
     parent[s] = -2;
@@ -47,7 +46,6 @@ int bfs(int s, int t, vector<int>& parent) {
 
     return 0;
 }
-
 int maxflow(int s, int t) {
     int flow = 0;
     vector<int> parent(n);

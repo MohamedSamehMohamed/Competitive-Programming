@@ -23,15 +23,14 @@ int n, a, b;
 string str;
 void generateInput(){
   ofstream cout("input");
-  n = 1 + myRand(100);
-  cout << 1 <<"\n";
-  cout << n << "\n";
-  for (int i = 0; i < n; i++){
-    a = myRand(n);
-    cout << a;
-    if (i + 1 < n) cout <<" ";
-    else
-      cout << "\n";
+  n = 1 + myRand(10);
+  int m = 1 + myRand(n);
+  int k = 1 + myRand(n);
+  cout << n << " " << k <<" " << m <<"\n";
+  for (int i = 0; i < m; i++){
+    int u = 1 + myRand(n);
+    int v = 1 + myRand(n);
+    cout << u <<" " << v << "\n";
   }
   cout.close();
 }

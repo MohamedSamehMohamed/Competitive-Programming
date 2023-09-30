@@ -1,72 +1,70 @@
 #include <bits/stdc++.h>
 using namespace std;
+const int INF = 2e9, N = 301 * 301 + 20;
+int n, k, m, vis[N];
+map<vector<int>, int> capacity;
+vector<int> adj[N], g[N];
+int bfs(int s, int t, vector<int>& parent) {
+  fill(parent.begin(), parent.end(), -1);
+  parent[s] = -2;
+  queue<pair<int, int>> q;
+  q.push({s, INF});
 
-const int N = 5010;
-const int M = (1 << 13) + 10;
-
-int mex[N][N];
-vector<bool> dp[N];
-int pos[M];
-
-int main() {
-  for (int i = 0; i < N; i++) {
-    dp[i].resize(M);
-  }
-  int tt;
-  cin >> tt;
-  /*
-  tt = 1;
-  */
-  while (tt--) {
-    int n;
-    cin >> n;
-    vector<int> a(n);
-    for (int i = 0; i < n; i++) {
-      cin >> a[i];
-    }
-    vector<int> was(n + 1, -1);
-    vector<vector<pair<int, int>>> g(n);
-    for (int i = n - 1; i >= 0; i--) {
-      int k = 0;
-      for (int j = i; j < n; j++) {
-        was[a[j]] = i;
-        while (k < n && was[k] == i) {
-          k += 1;
-        }
-        mex[i][j] = k;
-        if (i == j || (mex[i][j] > mex[i][j - 1] && mex[i][j] > mex[i + 1][j])) {
-          g[i].emplace_back(j, mex[i][j]);
-        }
-      }
-    }
-    for (int i = 0; i <= n; i++) {
-      for (int j = 0; j < M; j++) {
-        dp[i][j] = false;
-      }
-    }
-    dp[0][0] = true;
-    for (int i = 0; i < n; i++) {
-      int cc = 0;
-      for (int j = 0; j < M; j++) {
-        if (dp[i][j]) {
-          dp[i + 1][j] = true;
-          pos[cc++] = j;
-        }
-      }
-      for (auto& p : g[i]) {
-        int to = p.first + 1;
-        int v = p.second;
-        for (int jt = 0; jt < cc; jt++) {
-          dp[to][pos[jt] ^ v] = true;
-        }
-      }
-    }
-    for (int j = M - 1; j >= 0; j--) {
-      if (dp[n][j]) {
-        cout << j << '\n';
-        break;
+  while (!q.empty()) {
+    int cur = q.front().first;
+    int flow = q.front().second;
+    q.pop();
+    for (int next : adj[cur]) {
+      if (parent[next] == -1 && capacity[{cur,next}]) {
+        parent[next] = cur;
+        int new_flow = min(flow, capacity[{cur,next}]);
+        if (next == t)
+          return new_flow;
+        q.push({next, new_flow});
       }
     }
   }
+
   return 0;
+}
+int maxFlow(int s, int t) {
+  int flow = 0;
+  vector<int> parent(N);
+  int new_flow;
+
+  while (new_flow = bfs(s, t, parent)) {
+    flow += new_flow;
+    int cur = t;
+    while (cur != s) {
+      int prev = parent[cur];
+      capacity[{prev,cur}] -= new_flow;
+      capacity[{cur,prev}] += new_flow;
+      cur = prev;
+    }
+  }
+  return flow;
+}
+void add_edge(int u, int v, int c){
+  adj[u].push_back(v);
+  adj[v].push_back(u);
+  capacity[{u,v}] = c;
+}
+int main()
+{
+  scanf("%d%d%d", &n, &k, &m);
+  for(int i = 0; i < m; i++)
+  {
+    int u, v;
+    scanf("%d%d", &u, &v);
+    u--;v--;
+    for (int j = 0; j < k; j++)
+      add_edge(u * k + j, v * k + (j+1)%k, 1);
+  }
+  // one based
+  int src = n*k, dst = src+1;
+  for (int i = 0; i < k; i++){
+    add_edge(src, i*k+i, 1);
+    add_edge((n-1)*k+i, dst, (int)1e9);
+  }
+  printf("%d\n", maxFlow(src, dst));
 }

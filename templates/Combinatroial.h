@@ -81,3 +81,18 @@ class Counting
       return mul(a, fast(b, mod - 2));
     }
 };
+
+
+
+const int mod = 1e9 + 7;
+long long add(long long a, long long b){
+  return (a+b) % mod;
+}
+long long sub(long long a, long long b){
+  return (mod+(a-b)%mod)%mod;
+}
+long long prod(long long a, long long b){
+  a %= mod;
+  b %= mod;
+  return (a * b) % mod;
+}

@@ -70,6 +70,7 @@ bool dfs(int src, int dst){
 void add_edge(int u, int v, int c){
   adj[u].push_back(v);
   adj[v].push_back(u);
+  cout << u <<" " << v <<" " << c <<"\n";
   capacity[u][v] = c;
 }
 int main()
@@ -92,7 +93,13 @@ int main()
     dfs(i, n);
   for (int i = 1; i <= n; i++){
     for (int j = 1; j <= n; j++){
-      add_edge(i, j, (int)paths[i][j].size());
+      if (paths[i][j].size() != 0)
+      {
+        add_edge(i, j, (int)paths[i][j].size());
+        cout << i <<"->" << j <<"\n";
+        for(auto it: paths[i][j]) cout << it <<" ";
+        cout <<"\n";
+      }
     }
   }
   printf("%d\n", maxFlow(src, dst));
