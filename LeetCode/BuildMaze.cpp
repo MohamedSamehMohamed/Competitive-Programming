@@ -34,34 +34,34 @@ vector<vector<int>> gen_random_maze(int n, int m){
   grid[en_x][en_y] |= (1<<5);
   int dx[] = {-1, 0, 1, 0};
   int dy[] = {0, 1, 0, -1};
-  int edges = 0;
   vector<int> adj[n*m];
-  while (edges != n * m - 1){
-    for (int i = 0; i < n * m; i++) {
-      int r = i / m, c = i % m;
-      int open_doors = get_random_number(1, 4);
-      while (open_doors) {
-        vector<int> closed_doors;
-        for (int j = 0; j < 4; j++) {
-          int nr = r + dx[j];
-          int nc = c + dy[j];
-          if (nr < 0 || nc < 0 || nr >= n || nc >= m) continue;
-          int v = nr * m + nc;
-          if (!same(i, v)) closed_doors.push_back(j);
-        }
-        if (closed_doors.size() == 0) break;
-        int index = closed_doors[get_random_number(0, closed_doors.size() - 1)];
-        int nr = r + dx[index];
-        int nc = c + dy[index];
-        int v = nr * m + nc;
-        unit(i, v);
-        adj[i].push_back(v);
-        adj[v].push_back(i);
-        edges++;
-        open_doors--;
-      }
+  vector<vector<int>> edges;
+  // get all edges
+  for (int i = 0; i < n * m; i++) {
+    int r = i / m, c = i % m;
+    for (int j = 0; j < 4; j++) {
+      int nr = r + dx[j];
+      int nc = c + dy[j];
+      if (nr < 0 || nc < 0 || nr >= n || nc >= m) continue;
+      int v = nr * m + nc;
+      edges.push_back({i, v});
     }
   }
+  // build the tree
+  int taken_edges = 0;
+  while (taken_edges != n * m - 1){
+    int index = rand() % (int)edges.size();
+    int u = edges[index][0], v = edges[index][1];
+    if (!same(u, v)){
+      taken_edges++;
+      adj[u].push_back(v);
+      adj[v].push_back(u);
+      unit(u, v);
+    }
+    swap(edges[index], edges.back());
+    edges.pop_back();
+  }
+  // build the maze values
   for (int i = 0; i < n * m; i++){
     int cur_r = i / m, cur_c = i % m;
     for (int v: adj[i]){
@@ -69,10 +69,7 @@ vector<vector<int>> gen_random_maze(int n, int m){
       cout << cur_r + 1 <<" " << cur_c + 1 <<" -> " << v_r + 1 <<" " << v_c + 1 <<"\n";
       for (int j = 0; j < 4; j++){
         if (cur_r + dx[j] == v_r && cur_c + dy[j] == v_c){
-          cout << j << "j: ";
-          cout << grid[cur_r][cur_c] <<" to ";
           grid[cur_r][cur_c] &= ~(1<<j);
-          cout << grid[cur_r][cur_c] <<"\n";
           break;
         }
       }
@@ -82,22 +79,21 @@ vector<vector<int>> gen_random_maze(int n, int m){
 }
 vector<string> get_cell_shape(int value){
   vector<string> shape(3);
-  for (int i = 0; i < 3; i++){
-    shape[i] = "";
-    for (int j = 0; j < 3; j++)
-      shape[i] += "0";
-  }
+  shape[0] = "+0+";
+  shape[1] = "000";
+  shape[2] = "+0+";
+
   if (value & (1<<0)) {
-    shape[0] = "---";
+    shape[0] = "+++";
   }
   if (value & (1<<1)) {
-    shape[0][2] = shape[1][2] = shape[2][2] = '*';
+    shape[0][2] = shape[1][2] = shape[2][2] = '+';
   }
   if (value & (1<<2)) {
-    shape[2] = "---";
+    shape[2] = "+++";
   }
   if (value & (1<<3)) {
-    shape[0][0] = shape[1][0] = shape[2][0] = '*';
+    shape[0][0] = shape[1][0] = shape[2][0] = '+';
   }
   if (value & (1<<4)){
     shape[1][1] = 'S';
@@ -109,7 +105,7 @@ vector<string> get_cell_shape(int value){
 }
 int main(){
   int n = 3;
-  int m = 3;
+  int m = 4;
   auto maze = gen_random_maze(n, m);
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++)
@@ -130,11 +126,8 @@ int main(){
     r_index += 3;
   }
   for (int i = 0; i < 3 * n; i++) {
-    if (i % 3 == 0 && i) {
-      cout <<"\n";
-    }
     for (int j = 0; j < maze_draw[i].size(); j++){
-      if (j % 3 == 0 && j) cout << "|";
+      if (j % 3 == 0 && j) cout << " ";
       cout << maze_draw[i][j];
     }
 
