@@ -49,3 +49,7 @@
 /StressTest/testlib-master/read.me
 /StressTest/testlib-master/README.md
 /StressTest/testlib-master/testlib.h
+.vscode/tasks.json
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/settings.json
